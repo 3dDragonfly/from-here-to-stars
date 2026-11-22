@@ -1,0 +1,67 @@
+AstroCam Stack v0.4.0
+
+NY STANDARDMETODE: Se LAES-MIG-v0.4.txt for den aktuelle vejledning.
+Programmet sammenligner nu vaegtet MAD og Winsorized med forbedret justering.
+Nedenstaaende er den tidligere v0.3-vejledning, som kun gaelder --legacy.
+
+TIDLIGERE VERSION v0.3
+
+BRUG
+1. Dobbeltklik paa AstroCam-Stack.cmd i scrcpy-mappen.
+2. Vaelg EN undermappe i AstroCam-billeder med en optageserie.
+3. Lad konsollen arbejde faerdig. Resultatet gemmes i en ny Stack_...-mappe
+   i den valgte serie. Ctrl+C afbryder arbejdet.
+
+OUTPUT
+AstroCam-master-linear-16bit.tif: fuld oploesning, lineart 16-bit RGB-master.
+   Dette billede ser moerkt/fladt ud uden en passende visningskurve.
+AstroCam-stacked.png / .jpg: baggrundskorrigeret, kontrastbehandlet visning.
+AstroCam-preview.jpg: mindre visningsbillede.
+AstroCam-sammenligning.jpg: central 100%-beskaering, enkelt RAW mod stack,
+   samme visningskurve, med baggrund beregnet separat i de to billeder.
+rapport.json / billedkvalitet.csv: valgte/fravalgte billeder og maalinger.
+
+METODE
+Kun DNG-filer bruges. De tilhoerende JPEG-filer er samme eksponeringer og
+taelles ikke igen. RAW afkodes lineart med fast hvidbalance fra foerste fil.
+Kvalitet vurderes paa halv oploesning: mindst 25 fundne stjerner, hoejst
+0,5% naesten maettede pixels og en medianbaggrund hoejst 15% over det
+moerkeste ellers brugbare billede. Denne konservative heuristik passer til
+den testede serie med tiltagende skyer, men kan frasortere brugbare billeder
+i andre serier. Den er ikke en universel skydetektor.
+
+Stjernemoenstre matches med Astroalign; mindst 15 matches, RMS <= 2,4 pixels
+i fuld oploesning, skala 0,98-1,02 og rotation hoejst 15 grader accepteres.
+Der korrigeres for translation, rotation og en lille skalaaendring. Billederne
+beskaeres til et faelles rektangel uden sorte justeringskanter.
+
+Fuldoploeste billeder kombineres i raekkeblokke med et 3-sigma-filter omkring
+medianen (MAD som spredningsmaal med en stoejgraense). De tilbagevaerende
+samples middelvaerdiberegnes. Metoden reducerer effekten af enkeltstaaende
+hotpixels og lyse spor; den garanterer ikke fjernelse af alle artefakter.
+
+Der er ingen separate dark-, bias- eller flat-optagelser i denne behandling.
+Visningsfilerne faar en kosmetisk udjaevning af himmelbaggrunden og en asinh-
+kontrastkurve. Udjaevningen kan daempe aegte diffuse himmelstrukturer.
+Det lineare TIFF-master faar ingen saadan baggrundskorrektion.
+
+Originalfilerne aendres ikke. Midlertidige justerede filer oprettes i en unik
+.astrocam-cache-...-mappe under resultatmappen og slettes ved normal afslutning.
+Regn med cirka antal valgte billeder gange 73 MB midlertidig plads for S10e.
+Lukning med procesafbrydelse kan efterlade cachefiler. En fejlet behandling
+gemmer en rapport med fejlen og kan koeres igen til en ny resultatmappe.
+
+KOMMANDOLINJE
+AstroCam-Stack.cmd -InputFolder "F:\sti\til\en\optageserie"
+Avanceret: python astrocam_stack.py --input "F:\serie" --max-sky-ratio 1.15
+--output kan angive en ny, endnu ikke eksisterende resultatmappe.
+
+PYTHON
+Testet med Python 3.13.7 paa denne computer. Nogle biblioteker findes i den
+eksisterende Python-installation, andre i AstroCam-Stack\lib.
+Ved flytning til en anden computer: installer Python og pakker fra
+requirements.txt, og tilpas eventuelt Python-soegningen i AstroCam-Stack.ps1.
+
+DOKUMENTATION
+https://letmaik.github.io/rawpy/api/rawpy.Params.html
+https://astroalign.quatrope.org/en/latest/api.html

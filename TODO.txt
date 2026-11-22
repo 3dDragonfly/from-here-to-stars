@@ -1,0 +1,76 @@
+AstroCam - To-do list
+Updated: 2026-11-22
+
+Completed foundation
+[x] RAW image stacking with frame selection and star alignment.
+[x] Compare robust stacking methods and measure sharpness/noise.
+[x] Produce a cleaner viewing image while preserving the linear master.
+[x] Count star candidates and identify the photographed sky field.
+[x] Demonstrate directions from the saved field toward Draco.
+
+1. Identify and test the hardware
+[ ] Record Raspberry Pi model, RAM, Arduino model and printer motherboard.
+[ ] Record motor drivers, motors, power supply and available mount mechanics.
+[ ] Choose equatorial or altitude/azimuth geometry and axis gearing.
+[ ] Select compatible controller firmware and check its actual supported pins.
+[ ] Bench-test motor direction, smooth low-speed movement, limits and stop.
+[ ] Measure backlash and practical tracking accuracy under the intended load.
+
+2. Make laptop setup portable, then prepare the Raspberry Pi image pipeline
+[ ] Add a guided setup for dependencies and the S10e connection.
+[ ] Verify S10e identity and handle USB/Wi-Fi duplicates and reconnection.
+[ ] Test capture and stacking on a second Windows computer.
+[ ] Receive timestamped phone images reliably and monitor capture/transfer delay.
+[ ] Benchmark RAW decoding, star detection, alignment and stacking on this Pi.
+[ ] Use small image regions or reduced resolution for prompt drift measurements.
+[ ] Keep original RAW files for full-resolution processing and final export.
+[ ] Decide whether the phone cadence is sufficient or a guide camera is needed.
+
+3. Build live stacking
+[ ] Maintain an incremental aligned stack and update the viewing preview.
+[ ] Reject clouded, blurred, trailed and badly aligned frames.
+[ ] Preserve linear image data separately from display stretching/denoising.
+[ ] Add matched dark frames and flat-field calibration when available.
+[ ] Show accepted/rejected frames, exposure total and processing delay.
+
+4. Add image-based tracking
+[ ] Calibrate motor-axis movement against image X/Y, including camera rotation.
+[ ] Measure multiple-star movement BEFORE aligning images for the stack.
+[ ] Combine known tracking motion with a robust estimate of residual drift.
+[ ] Send bounded corrections while the controller maintains continuous tracking.
+[ ] Support one-axis mounts with manual assistance for the other direction.
+[ ] Verify movement using new images and log pointing error and motor commands.
+
+5. Keep tracking through clouds
+[ ] Learn a steady rate from reliable observations; reject sudden bad estimates.
+[ ] Detect lost stars using match quality and agreement between multiple stars.
+[ ] During loss, freeze learning and continue predicted tracking motion.
+[ ] Keep time-dependent altitude/azimuth rates updating where applicable.
+[ ] Track time since last reliable observation and growing prediction uncertainty.
+[ ] Define when to fall back from a learned correction to the base tracking model.
+[ ] Exclude unreliable frames from the live stack during loss.
+[ ] Reidentify the original field when stars return; confirm across fresh frames.
+[ ] Correct accumulated offset gradually, then resume learning and stacking.
+[ ] Validate short clouds, long clouds, false stars and camera/controller outages.
+
+6. Build target finding and accessory controls
+[ ] Add target search, sky-coordinate lookup and fresh-image plate solving.
+[ ] Show manual direction arrows and angular distance to the selected target.
+[ ] Add automatic targeting for mounts with suitable controllable axes.
+[ ] Recheck the target after movement and report any remaining manual adjustment.
+[ ] Map supported spare motor channels to focuser and optional camera rotator.
+[ ] Map compatible power outputs to dew heaters and fans; verify ratings first.
+[ ] Add supported temperature sensors, home/limit switches and status reporting.
+
+First milestone
+Identify the boards, then demonstrate one-axis tracking with measured image drift
+and a simulated cloud gap before integrating full live stacking and targeting.
+
+Status note
+The completed items above refer to the existing offline AstroCam work. Raspberry
+Pi live processing, physical mount control and cloud recovery are planned work.
+
+Publication preparation
+[x] Replace fixed capture IP with an optional -Device argument.
+[x] Discover a single authorized ADB device when no argument is supplied.
+[ ] Verify the portable capture launcher with the physical S10e.

@@ -1,0 +1,73 @@
+AstroCam Stack v0.4.0
+
+BRUG
+Dobbeltklik paa AstroCam-Stack.cmd i scrcpy-mappen, og vaelg EN optageserie
+med DNG-filer under AstroCam-billeder. Resultaterne gemmes i en ny
+Stack_v04_...-undermappe i serien. Begge metoder beregnes: kvalitetsvaegtet
+MAD og Winsorized sigma-clipping. Ctrl+C afbryder arbejdet.
+
+DET NYE
+- Praecise stjernecentre i fuld oploesning og op til 400 stjerner per billede.
+- Homografi sammenlignes med similarity paa tilbageholdte kontrolstjerner.
+  Homografi vaelges kun ved bedre kontrolresultat, rimelig geometri og
+  tilstraekkelig daekning af billedfeltet. Modellen tilpasses derefter alle par.
+- Lysnormalisering fra robuste forhold mellem lokale stjernefluxmaalinger.
+  En faelles skalar bruges til alle farvekanaler.
+- Additive baggrundsforskelle mod referencen korrigeres med et plan per kanal.
+- Vaegtning ud fra normaliseret baggrundsstoej og relativ PSF-stoerrelse.
+- Samme normaliserede input, vaegte og visningskurve til begge clipping-metoder.
+  Der bruges ingen kosmetisk stoejreduktion i sammenligningen.
+
+RESULTATER
+mad-master-linear-float32.tif / winsorized-master-linear-float32.tif:
+   Lineare RGB-resultater i 32-bit float. Lys og baggrund er normaliseret
+   til referencen. Ingen ny dark-, bias- eller flat-kalibrering.
+mad-display.png / winsorized-display.png: behandlede visningsbilleder.
+AstroCam-v04-selected.png / AstroCam-v04-preview.jpg: den valgte variant.
+AstroCam-method-comparison.jpg: samme kontrast, fuldt felt og detaljeudsnit.
+mad-rejection-fraction.png / winsorized-rejection-fraction.png:
+   Graatonekort over afviste samples, skala 0-255 = 0-100%.
+comparison-report.json: modeller, kontrolfejl, vaegte, parametre og maalinger.
+frame-measurements.csv: kort oversigt over billedmaalingerne.
+
+CLIPPING OG VALG
+Begge varianter bruger 3-sigma-afvisning. MAD estimerer spredningen omkring
+medianen. Winsorized bruger op til 8 iterationer med intern begraensning til
++/-1,5 sigma og en Gaussisk konsistensfaktor til centrum/spredning. Det endelige
+gennemsnit bruger de oprindelige godkendte samples, ikke de begraensede vaerdier.
+
+Winsorized vaelges kun, hvis spredningen af flux i faelles tomme aperturer er
+mindst 2% lavere, parret median-stjerneflux ligger inden for 2% af MAD, og
+median-stjernebredden ikke er over 2% stoerre. Ellers vaelges MAD. Denne
+praktiske regel er ikke en universel rangering; se ogsaa billederne.
+
+BEGRAENSNINGER
+Kraftigt skyede billeder frasorteres fortsat. Standardudvalget bruger mindst
+25 halvoploeste stjerner, hoejst 0,5% naesten maettede pixels og en medianbaggrund
+hoejst 15% over det moerkeste brugbare billede. Avanceret justering kraever
+mindst 40 praecise stjernepar. Homografi er ikke en fuld linsekalibrering.
+Baggrundstilpasning kan paavirkes af skyer. Visningsfilernes separate
+baggrundsfratraek kan daempe diffuse astronomiske strukturer.
+Stoej og stjernebredde er billeddiagnostik, ikke kalibreret foton-SNR.
+
+DATA OG PLADS
+Originalerne aabnes kun til laesning. Stoerrelse og aendringstid kontrolleres
+igen ved afslutning. Midlertidige float32-billeder fylder cirka 146 MB per
+S10e-billede og ligger i en unik .astrocam-v04-...-mappe under resultatmappen.
+Den slettes ved normal afslutning og haandterede fejl. Tvangslukning kan
+efterlade cachefiler. Ledig diskplads kontrolleres foer arbejdet starter.
+
+KOMMANDOLINJE
+AstroCam-Stack.cmd -InputFolder "F:\sti\til\optageserie"
+Python: python astrocam_stack.py --input "F:\serie"
+--selection-report "F:\tidligere-stack\rapport.json" genbruger samme RAW-udvalg
+og reference, saa en foer/efter-sammenligning kan laves.
+--output angiver en ny, endnu ikke eksisterende resultatmappe.
+--legacy bruger den tidligere v0.3-metode.
+
+Testet med Python 3.13.7. Afhaengigheder findes i Python-installationen samt
+AstroCam-Stack\lib. Paa andre computere installeres requirements.txt.
+
+REFERENCER
+https://siril.readthedocs.io/en/stable/preprocessing/registration.html
+https://siril.readthedocs.io/en/stable/preprocessing/stacking.html

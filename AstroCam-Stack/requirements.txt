@@ -1,0 +1,13 @@
+numpy==2.4.6
+scipy==1.18.1
+Pillow==12.2.0
+opencv-python==5.1.0.95
+rawpy==0.28.0
+tifffile==2026.11.16
+astroalign==2.6.2
+sep==1.4.1
+scikit-image==0.26.0
+imageio==2.38.2
+lazy-loader==0.6
+networkx==3.7
+packaging==26.3

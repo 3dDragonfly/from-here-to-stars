@@ -1,0 +1,24 @@
+# Captures and generated image products can contain private metadata.
+AstroCam-billeder/
+AstroCamCaptures/
+Stack*/
+*.dng
+*.DNG
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.npy
+*.npz
+# Local runtimes, settings, credentials and caches
+AstroCam-Stack/lib/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+*.log
+local-settings.json
