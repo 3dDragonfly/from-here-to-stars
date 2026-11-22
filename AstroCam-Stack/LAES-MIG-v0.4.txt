@@ -1,4 +1,4 @@
-AstroCam Stack v0.4.0
+From Here to Stars - RAW stacker v0.4.0
 
 BRUG
 Dobbeltklik paa AstroCam-Stack.cmd i scrcpy-mappen, og vaelg EN optageserie

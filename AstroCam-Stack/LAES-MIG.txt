@@ -1,4 +1,4 @@
-AstroCam Stack v0.4.0
+From Here to Stars - RAW stacker v0.4.0
 
 NY STANDARDMETODE: Se LAES-MIG-v0.4.txt for den aktuelle vejledning.
 Programmet sammenligner nu vaegtet MAD og Winsorized med forbedret justering.

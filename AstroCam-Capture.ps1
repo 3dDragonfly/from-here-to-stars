@@ -12,7 +12,7 @@ $script:before = @{}
 $script:destination = $null
 
 $form = New-Object System.Windows.Forms.Form
-$form.Text = 'AstroCam Control'
+$form.Text = 'From Here to Stars - S10e Capture'
 $form.Size = New-Object System.Drawing.Size(460, 365)
 $form.StartPosition = 'CenterScreen'
 

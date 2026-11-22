@@ -1,11 +1,14 @@
-# AstroCam-S10e
+# From Here to Stars
 
 Phone astrophotography with a Samsung Galaxy S10e: Windows capture controls,
 RAW image stacking, and optional deterministic image cleanup.
 
-The project uses the same S10e when moving between computers. The repository
-name distinguishes it from other projects named AstroCam; it does not imply
-that the name is reserved outside this GitHub repository.
+From Here to Stars started as AstroCam. It uses the same S10e when moving
+between computers, with a roadmap toward live stacking, target finding and
+telescope tracking. Existing scripts and output files retain their AstroCam
+filenames.
+
+Repository: https://github.com/3dDragonfly/from-here-to-stars
 
 ## Current capabilities
 
@@ -43,7 +46,7 @@ the stacker caches approximately 146 MB per accepted S10e frame, plus results.
 ## Capture
 
 Open Samsung Camera, select Pro mode, enable RAW saving, and set exposure,
-ISO and focus manually. The exposure field in AstroCam controls scheduling;
+ISO and focus manually. The exposure field controls scheduling;
 it does not set the camera's actual shutter speed. Match those values yourself.
 The current Pro-mode check expects the camera's English UI label `Pro, Mode`.
 
